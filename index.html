@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="land.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smoke Technologies</title>
+</head>
+<body>
+  <header>
+    <img src="land.png.png" alt="SmokeTech Logo" />
+    <h1>Smoke Technologies</h1>
+    <p><em>Care Beyond Repair</em></p>
+    <p id="typing"></p>
+    <a href="#contact" class="btn">Contact Us</a>
+    <a href="#booking" class="btn">Book a Repair</a>
+  </header>
+
+  <section>
+    <h2>About Us</h2>
+    <p>At Smoke Technologies, we blend deep tech expertise with personal service. From phones to laptops and everything in between, we deliver care beyond repair.</p>
+  </section>
+
+  <section class="services">
+    <h2>Our Services</h2>
+    <ul>
+      <li>Phone Repairs – Screens, Charging Ports, Batteries</li>
+      <li>Laptop Fixes – Software, Hardware, Reballing</li>
+      <li>Flashing & Unlocking – MTK, SPD, FRP Bypass</li>
+      <li>Remote Support & Consultations</li>
+      <li>Sales of Tools & Accessories</li>
+    </ul>
+  </section>
+
+  <section id="booking">
+    <h2>Book a Repair</h2>
+    <p>Contact us on WhatsApp or Telegram to book a service:</p>
+    <a href="https://wa.me/254113017209" class="btn">WhatsApp</a>
+    <a href="https://t.me/smoke25450" class="btn">Telegram</a>
+  </section>
+
+  <section id="status">
+    <h2>Check Repair Status</h2>
+    <form id="statusForm">
+      <input type="text" id="jobId" placeholder="Enter your Job ID" required />
+      <button type="submit">Check Status</button>
+      <p id="statusResult"></p>
+    </form>
+  </section>
+
+  <section id="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-slider">
+      <div class="testimonial">"SmokeTech revived my phone like magic! 10/10 service." — Mary K.</div>
+      <div class="testimonial">"Fast, affordable, and super professional." — Juma M.</div>
+      <div class="testimonial">"Best tech repair experience I’ve had." — Aisha T.</div>
+    </div>
+  </section>
+
+  <section id="map">
+    <h2>Find Us</h2>
+    <iframe src="https://www.google.com/maps?q=Pwani%20University%20Gate%20Kilifi&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+  <section id="gallery">
+    <h2>Our Work</h2>
+    <div class="gallery-grid">
+      <img src="before1.jpg" alt="Before Repair">
+      <img src="after1.jpg" alt="After Repair">
+      <img src="before2.jpg" alt="Before Repair">
+      <img src="after2.jpg" alt="After Repair">
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <details>
+      <summary>How long does a typical repair take?</summary>
+      <p>Most repairs are completed within 1–2 hours. Some may take longer depending on the issue.</p>
+    </details>
+    <details>
+      <summary>Do you offer warranties?</summary>
+      <p>Yes! All repairs come with a 30-day service warranty.</p>
+    </details>
+    <details>
+      <summary>Do I need to book before coming?</summary>
+      <p>Not necessarily, but we recommend booking for faster service. Walk-ins are welcome too.</p>
+    </details>
+  </section>
+
+  <section id="contact">
+    <h2>Contact & Location</h2>
+    <p>📞 Phone: +254113017209<br>
+       📍 Location: Pwani University Gate, Kilifi–Malindi Highway<br>
+       🕒 Hours: Mon–Sat, 9:00 AM – 6:00 PM</p>
+  </section>
+
+  <footer>
+    <p>Smoke Technologies – Care Beyond Repair © 2025</p>
+  </footer>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/254113017209" class="whatsapp-float" target="_blank">💬 Chat with Us</a>
+
+  <script>
+    const phrases = ["Flashing Experts", "Laptop Repair Gurus", "Phone Repair Pros"];
+    let i = 0, j = 0, current = "", isDeleting = false;
+    function typeEffect() {
+      const text = phrases[i];
+      current = isDeleting ? text.substring(0, j--) : text.substring(0, j++);
+      document.getElementById("typing").textContent = current;
+      if (!isDeleting && j === text.length) { isDeleting = true; setTimeout(typeEffect, 10000); }
+      else if (isDeleting && j === 0) { isDeleting = false; i = (i + 1) % phrases.length; }
+      setTimeout(typeEffect, isDeleting ? 250 : 500);
+    }
+    typeEffect();
+
+    document.getElementById('statusForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const jobId = document.getElementById('jobId').value.trim().toUpperCase();
+      const fakeDB = { "ST1001": "In Progress", "ST1002": "Ready for Pickup", "ST1003": "Completed" };
+      const status = fakeDB[jobId];
+      const result = status ? `Status: ${status}` : "Job ID not found.";
+      document.getElementById('statusResult').textContent = result;
+    });
+  </script>
+</body>
+</html>
