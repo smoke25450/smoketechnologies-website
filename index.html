@@ -1,110 +1,205 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="land.css">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>smoke technologies</title>
-</head>
-<body>
-  <header>
-    <img src="land.png.png" alt="SmokeTech Logo" />
-    <h1>Smoke Technologies</h1>
-    <p><em>Care Beyond Repair</em></p>
-    <p id="typing"></p>
-    <a href="#contact" class="btn">Contact Us</a>
-    <a href="#booking" class="btn">Book a Repair</a>
-  </header>
-
-  <section>
-    <h2>About Us</h2>
-    <p>At Smoke Technologies, we blend deep tech expertise with personal service. From phones to laptops and everything in between, we deliver care beyond repair.</p>
-  </section>
-
-  <section class="services">
-    <h2>Our Services</h2>
-    <ul>
-      <li>Phone Repairs – Screens, Charging Ports, Batteries</li>
-      <li>Laptop Fixes – Software, Hardware, Reballing</li>
-      <li>Flashing & Unlocking – MTK, SPD, FRP Bypass</li>
-      <li>Remote Support & Consultations</li>
-      <li>Sales of Tools & Accessories</li>
-    </ul>
-  </section>
-
-  <section id="booking">
-    <h2>Book a Repair</h2>
-    <p>Contact us on WhatsApp or Telegram to book a service:</p>
-    <a href="https://wa.me/254113017209" class="btn">WhatsApp</a>
-    <a href="https://t.me/smoke25450" class="btn">Telegram</a>
-
-    <form id="statusForm">
-      <h3>Check Repair Status</h3>
-      <input type="text" id="jobId" placeholder="Enter your Job ID" required />
-      <button type="submit">Check Status</button>
-      <p id="statusResult"></p>
-    </form>
-  </section>
-
-  <section id="contact">
-    <h2>Contact & Location</h2>
-    <p>📞 Phone: +254113017209<br>
-       📍 Location: Pwani University Gate, Kilifi–Malindi Highway<br>
-       🕒 Hours: Mon–Sat, 9:00 AM – 6:00 PM</p>
-  </section>
-
-  <footer>
-    <p>Smoke Technologies – Care Beyond Repair © 2025</p>
-  </footer>
-
-  <script>
-    const phrases = ["Flashing Experts", "Laptop Repair Gurus", "Phone Repair Pros"];
-    let i = 0, j = 0, current = "", isDeleting = false;
-
-    function typeEffect() {
-      const text = phrases[i];
-      current = isDeleting ? text.substring(0, j--) : text.substring(0, j++);
-      document.getElementById("typing").textContent = current;
-      if (!isDeleting && j === text.length) {
-        isDeleting = true;
-        setTimeout(typeEffect, 100000);
-      } else if (isDeleting && j === 0) {
-        isDeleting = false;
-        i = (i + 1) % phrases.length;
-      }
-      setTimeout(typeEffect, isDeleting ? 250 : 500);
+  <title>Smoke Technologies</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      color: #333;
     }
 
-    typeEffect();
+    .suggestions-list {
+      list-style: none;
+      border: 1px solid #ccc;
+      max-height: 150px;
+      overflow-y: auto;
+      padding: 5px;
+      width: 100%;
+      position: absolute;
+      background-color: white;
+      z-index: 1000;
+    }
 
-    // Scroll animation
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
+    .suggestions-list li {
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    .suggestions-list li:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<header style="background:#101820; color:white; text-align:center; padding:40px 20px;">
+  <img src="land.png.png" alt="SmokeTech Logo" style="width:120px; border-radius:10px; box-shadow:0 0 10px rgba(255,255,255,0.3);" />
+  <h1 style="margin:10px 0; font-size:2.5em;">Smoke Technologies</h1>
+  <p style="font-style:italic; font-size:1.2em; margin:0;">Care Beyond Repair</p>
+  <p id="typing" style="font-size:1.1em; color:#00ffcc; margin:10px 0; height:24px;"></p>
+  <div style="margin-top:20px;">
+    <a href="#contact" style="text-decoration:none; background:#00c896; color:white; padding:12px 20px; margin:5px; border-radius:30px; display:inline-block;">Contact Us</a>
+    <a href="#booking" style="text-decoration:none; background:#ff6f00; color:white; padding:12px 20px; margin:5px; border-radius:30px; display:inline-block;">Book a Repair</a>
+  </div>
+</header>
+
+<section id="tools-search" style="padding: 40px 20px;">
+  <h2>Search MDM Files & Spare Parts</h2>
+  <input type="text" id="modelSearch" onkeyup="showSuggestions()" placeholder="Enter phone model (e.g., Infinix Note 12)" style="padding: 10px; width: 80%; max-width: 400px;" />
+  <ul id="suggestions" class="suggestions-list"></ul>
+  <button onclick="searchModel()" style="margin-top: 10px; padding: 10px 20px;">Search</button>
+  <div id="searchResults" style="margin-top: 20px;"></div>
+</section>
+
+<section style="padding:40px 20px; text-align:center;">
+  <h2 style="font-size:2em; color:#101820;">About Us</h2>
+  <p style="max-width:800px; margin:auto;">At Smoke Technologies, we blend deep tech expertise with personal service. From phones to laptops and everything in between, we deliver care beyond repair.</p>
+</section>
+
+<section class="services" style="background:#fff; padding:40px 20px; text-align:center;">
+  <h2 style="font-size:2em; color:#101820;">Our Services</h2>
+  <ul style="list-style:none; padding:0; max-width:600px; margin:auto; text-align:left;">
+    <li style="padding:10px 0; border-bottom:1px solid #ddd;">📱 Phone Repairs – Screens, Charging Ports, Batteries</li>
+    <li style="padding:10px 0; border-bottom:1px solid #ddd;">💻 Laptop Fixes – Software, Hardware, Reballing</li>
+    <li style="padding:10px 0; border-bottom:1px solid #ddd;">🔓 Flashing & Unlocking – MTK, SPD, FRP Bypass</li>
+    <li style="padding:10px 0; border-bottom:1px solid #ddd;">🛠️ Remote Support & Consultations</li>
+    <li style="padding:10px 0;">🧰 Sales of Tools & Accessories</li>
+  </ul>
+</section>
+
+<section id="booking" style="padding:40px 20px; text-align:center; background:#f0f0f0;">
+  <h2 style="font-size:2em; color:#101820;">Book a Repair</h2>
+  <p>Contact us on WhatsApp or Telegram to book a service:</p>
+  <a href="https://wa.me/254113017209" style="text-decoration:none; background:#25d366; color:white; padding:10px 20px; margin:5px; border-radius:30px;">WhatsApp</a>
+  <a href="https://t.me/smoke25450" style="text-decoration:none; background:#0088cc; color:white; padding:10px 20px; margin:5px; border-radius:30px;">Telegram</a>
+
+  <form id="statusForm" style="margin-top:30px;">
+    <h3 style="color:#101820;">Check Repair Status</h3>
+    <input type="text" id="jobId" placeholder="Enter your Job ID" required style="padding:10px; border:1px solid #ccc; border-radius:5px; width:200px;" />
+    <button type="submit" style="padding:10px 20px; background:#101820; color:white; border:none; border-radius:5px; margin-left:10px;">Check Status</button>
+    <p id="statusResult" style="margin-top:10px; font-weight:bold;"></p>
+  </form>
+</section>
+
+<section id="contact" style="padding:40px 20px; background:#101820; color:white; text-align:center;">
+  <h2 style="font-size:2em;">Contact & Location</h2>
+  <p>📞 Phone: +254113017209<br>
+     📍 Location: Pwani University Gate, Kilifi–Malindi Highway<br>
+     🕒 Hours: Mon–Sat, 9:00 AM – 6:00 PM</p>
+</section>
+
+<footer style="background:#000; color:white; text-align:center; padding:20px;">
+  <p>Smoke Technologies – Care Beyond Repair © 2025</p>
+</footer>
+
+<script>
+  const dummyDatabase = {
+    "INFINIX NOTE 12": {
+      mdm: ["INFINIX NOTE 12 MDM FILE V1", "Bypass Tool"],
+      spares: ["Battery (BL-42), Ksh 700", "Screen Replacement, Ksh 1500"]
+    },
+    "SAMSUNG A12": {
+      mdm: ["SAMSUNG A12 MDM Remove File"],
+      spares: ["Charging Port, Ksh 500", "Back Cover, Ksh 350"]
+    },
+    "TECNO CAMON 19": {
+      mdm: ["Camon 19 MDM Removal File", "Preloader Auth File"],
+      spares: ["Camon 19 LCD, Ksh 2200", "Fingerprint Flex, Ksh 300"]
+    }
+  };
+
+  function showSuggestions() {
+    const input = document.getElementById("modelSearch").value.toUpperCase().trim();
+    const suggestions = Object.keys(dummyDatabase).filter(model => model.includes(input));
+    const list = document.getElementById("suggestions");
+    list.innerHTML = "";
+    if (input && suggestions.length) {
+      suggestions.forEach(model => {
+        const li = document.createElement("li");
+        li.textContent = model;
+        li.onclick = () => {
+          document.getElementById("modelSearch").value = model;
+          list.innerHTML = "";
+        };
+        list.appendChild(li);
       });
-    }, { threshold: 0.5 });
+    }
+  }
 
-    sections.forEach(section => observer.observe(section));
+  function searchModel() {
+    const query = document.getElementById("modelSearch").value.toUpperCase().trim();
+    const result = dummyDatabase[query];
+    const container = document.getElementById("searchResults");
 
-    // Status Checker
-    document.getElementById('statusForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const jobId = document.getElementById('jobId').value.trim();
-      const fakeDB = {
-        "ST1001": "In Progress",
-        "ST1002": "Ready for Pickup",
-        "ST1003": "Completed",
-        "ST1004": "Waiting for Parts"
-      };
-      const status = fakeDB[jobId.toUpperCase()];
-      const result = status ? `Status: ${status}` : "Job ID not found.";
-      document.getElementById('statusResult').textContent = result;
+    if (result) {
+      container.innerHTML = `
+        <h3>Results for ${query}</h3>
+        <h4>MDM Files:</h4>
+        <ul>${result.mdm.map(file => `<li>${file}</li>`).join('')}</ul>
+        <h4>Spare Parts:</h4>
+        <ul>${result.spares.map(part => `<li>${part}</li>`).join('')}</ul>
+      `;
+    } else {
+      container.innerHTML = "<p>No results found. Try another model.</p>";
+    }
+  }
+
+  const phrases = ["Flashing Experts", "Laptop Repair Gurus", "Phone Repair Pros"];
+  let i = 0, j = 0, current = "", isDeleting = false;
+
+  function typeEffect() {
+    const text = phrases[i];
+    current = isDeleting ? text.substring(0, j--) : text.substring(0, j++);
+    document.getElementById("typing").textContent = current;
+    if (!isDeleting && j === text.length) {
+      isDeleting = true;
+      setTimeout(typeEffect, 1500);
+    } else if (isDeleting && j === 0) {
+      isDeleting = false;
+      i = (i + 1) % phrases.length;
+      setTimeout(typeEffect, 500);
+    } else {
+      setTimeout(typeEffect, isDeleting ? 100 : 150);
+    }
+  }
+
+  typeEffect();
+
+  const sections = document.querySelectorAll("section");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+      }
     });
-  </script>
+  }, { threshold: 0.5 });
+
+  sections.forEach(section => {
+    section.style.opacity = "0";
+    section.style.transform = "translateY(40px)";
+    section.style.transition = "all 0.6s ease-out";
+    observer.observe(section);
+  });
+
+  document.getElementById('statusForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const jobId = document.getElementById('jobId').value.trim();
+    const fakeDB = {
+      "ST1001": "In Progress",
+      "ST1002": "Ready for Pickup",
+      "ST1003": "Completed",
+      "ST1004": "Waiting for Parts"
+    };
+    const status = fakeDB[jobId.toUpperCase()];
+    const result = status ? `Status: ${status}` : "Job ID not found.";
+    document.getElementById('statusResult').textContent = result;
+  });
+</script>
+
 </body>
 </html>
-
