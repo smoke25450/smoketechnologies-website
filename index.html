@@ -91,6 +91,22 @@
      📍 Location: Pwani University Gate, Kilifi–Malindi Highway<br>
      🕒 Hours: Mon–Sat, 9:00 AM – 6:00 PM</p>
 </section>
+  <div class="container upload-form" style="max-width: 500px; margin: 0 auto;">
+  <h2>User Login</h2>
+  <input type="text" id="loginUsername" placeholder="Username">
+  <input type="password" id="loginPassword" placeholder="Password">
+  <button onclick="loginUser()">Login</button>
+  <p id="loginMessage"></p>
+</div>
+
+<div class="container upload-form" style="max-width: 500px; margin: 0 auto;">
+  <h2>Register New Account</h2>
+  <input type="text" id="registerUsername" placeholder="Choose a Username">
+  <input type="password" id="registerPassword" placeholder="Choose a Password">
+  <button onclick="registerUser()">Register</button>
+  <p id="registerMessage"></p>
+</div>
+
 
 <footer style="background:#000; color:white; text-align:center; padding:20px;">
   <p>Smoke Technologies – Care Beyond Repair © 2025</p>
@@ -200,6 +216,35 @@
     document.getElementById('statusResult').textContent = result;
   });
 </script>
+function loginUser() {
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
+
+  fetch('/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username, password})
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("loginMessage").textContent = data.message;
+  });
+}
+
+function registerUser() {
+  const username = document.getElementById("registerUsername").value;
+  const password = document.getElementById("registerPassword").value;
+
+  fetch('/register', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({username, password})
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("registerMessage").textContent = data.message;
+  });
+}
 
 </body>
 </html>
